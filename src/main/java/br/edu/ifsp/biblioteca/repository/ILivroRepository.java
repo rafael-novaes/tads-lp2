@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ILivroRepository {
-    Livro salvar (Livro livro);
+
+    Livro salvar(Livro livro);
 
     List<Livro> listarTodos();
 
