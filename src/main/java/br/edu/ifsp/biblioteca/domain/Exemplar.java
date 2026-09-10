@@ -48,7 +48,7 @@ public class Exemplar {
     @Override
     public String toString() {
         return "Exemplar{" +
-                "codigo='" + codigo + '\'' +
+                "codigo ='" + codigo + '\'' +
                 ", status=" + status +
                 '}';
     }
