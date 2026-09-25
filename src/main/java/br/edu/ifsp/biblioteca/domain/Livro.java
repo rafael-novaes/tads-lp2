@@ -56,6 +56,8 @@ public class Livro {
         this.listaDeExemplares.add(item);
     }
 
+    public List<Autor> getAutores() {return autores;}
+
     public void adicionarAutor(Autor autor) {
         this.autores.add(autor);
     }
@@ -68,5 +70,10 @@ public class Livro {
                 ", titulo='" + titulo + '\'' +
                 ", anoPublicacao=" + anoPublicacao +
                 '}';
+    }
+
+
+    public List<Exemplar> getListaDeExemplares() {
+        return listaDeExemplares;
     }
 }

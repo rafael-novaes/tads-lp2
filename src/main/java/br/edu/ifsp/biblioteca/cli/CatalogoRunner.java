@@ -7,50 +7,51 @@ import br.edu.ifsp.biblioteca.repository.LivroRepositoryEmMemoria;
 import br.edu.ifsp.biblioteca.repository.UsuarioRepositoryEmMemoria;
 import br.edu.ifsp.biblioteca.service.LivroService;
 import br.edu.ifsp.biblioteca.service.UsuarioService;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public class CatalogoRunner {
+@Component
+public class CatalogoRunner implements CommandLineRunner {
 
     private final LivroService livroService;
     private final UsuarioService usuarioService;
 
-    public CatalogoRunner() {
-
-        this.livroService = new LivroService(
-            new LivroRepositoryEmMemoria()
-        );
-
-        this.usuarioService = new UsuarioService(
-            new UsuarioRepositoryEmMemoria()
-        );
+    public CatalogoRunner(
+            LivroService livroService,
+            UsuarioService usuarioService
+    ) {
+        this.livroService = livroService;
+        this.usuarioService = usuarioService;
     }
 
     public void run(String... args) {
+
         System.out.println();
-        System.out.println("=== Biblioteca IFSP - v0 (tudo em memória)");
+        System.out.println("=== Biblioteca IFSP - v0 (tudo em memória) ===");
 
         Livro domCasmurro = new Livro(
-                "9788508145603",
+                "9788508145607",
                 "Dom Casmurro",
-                2026
+                1899
         );
 
         this.livroService.cadastrar(domCasmurro);
-        this.livroService.adicionarAutor(domCasmurro.getId(), "Machado de Assis");
 
+        this.livroService.adicionarAutor(domCasmurro.getId(), "Machado de Assis");
         this.livroService.adicionarExemplar(domCasmurro.getId(), "DC-001");
         this.livroService.adicionarExemplar(domCasmurro.getId(), "DC-002");
 
         Livro vidasSecas = new Livro(
-                "9788508145607",
+                "9788508145603",
                 "Vidas Secas",
                 1938
         );
 
         this.livroService.cadastrar(vidasSecas);
-        this.livroService.adicionarAutor(vidasSecas.getId(), "Graciliano Ramos");
 
+        this.livroService.adicionarAutor(vidasSecas.getId(), "Graciliano Ramos");
         this.livroService.adicionarExemplar(vidasSecas.getId(), "VS-001");
 
         this.usuarioService.cadastrar(new Usuario("Ana Souza", "ana@ifsp.edu.br"));
@@ -58,13 +59,15 @@ public class CatalogoRunner {
 
         System.out.println();
         System.out.println("-- Catálogo --");
-        for(Livro livro : this.livroService.listarTodos()){
+
+        for (Livro livro : this.livroService.listarTodos()) {
             System.out.println(" " + livro);
         }
 
         System.out.println();
         System.out.println("-- Usuários --");
-        for(Usuario usuario : this.usuarioService.listarTodos()){
+
+        for (Usuario usuario : this.usuarioService.listarTodos()) {
             System.out.println(" " + usuario);
         }
 
@@ -78,18 +81,20 @@ public class CatalogoRunner {
         }
 
         System.out.println();
-        System.out.println("-- Testando cadastrar o mesmo ISBN de novo");
+        System.out.println("-- Testando cadastrar o mesmo ISBN de novo --");
 
         try {
-            this.livroService.cadastrar( new Livro(
-                    "9788508145603",
-                    "Dom Casmurro",
-                    2026
-            ));
-        }
-        catch (RegraDeNegocioException e) {
-            System.out.println("Regra de Negócio impediu: " + e.getMessage());
-        }
 
+            this.livroService.cadastrar(
+                    new Livro(
+                            "9788508145603",
+                            "Vidas Secas",
+                            1938
+                    )
+            );
+
+        } catch (RegraDeNegocioException erro) {
+            System.out.println(" Regra de negócio impediu: " + erro.getMessage());
+        }
     }
 }

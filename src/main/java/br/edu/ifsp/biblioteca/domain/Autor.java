@@ -17,6 +17,8 @@ public class Autor {
         this.id = id;
     }
 
+    public String getNome() {return this.nome;}
+
     @Override
     public String toString() {
         return this.nome;
