@@ -30,14 +30,22 @@ public class LivroRepositoryJdbc implements ILivroRepository {
         {
             conexao.setAutoCommit(false);
 
-            if (livro.getId() == null) {
-                this.inserirLivro(conexao, livro);
-            } else {
-                this.atualizarLivro(conexao, livro);
-            }
+            try{
+                if (livro.getId() == null) {
+                    this.inserirLivro(conexao, livro);
+                } else {
+                    this.atualizarLivro(conexao, livro);
+                }
 
-            this.salvarAutores(conexao, livro);
-            this.salvarExemplares(conexao, livro);
+                this.salvarAutores(conexao, livro);
+                this.salvarExemplares(conexao, livro);
+
+                conexao.commit();
+
+            } catch (SQLException erro) {
+                conexao.rollback();
+                throw erro;
+            }
 
         } catch (SQLException erro) {
             throw new IllegalStateException("", erro);
@@ -69,7 +77,7 @@ public class LivroRepositoryJdbc implements ILivroRepository {
 
     private void atualizarLivro(Connection conexao, Livro livro) throws SQLException{
 
-        String sql = "UPDATE livro SET isbn = ?, titulo = ?, ano_publicao = ? WHERE id = ?";
+        String sql = "UPDATE livro SET isbn = ?, titulo = ?, ano_publicacao = ? WHERE id = ?";
 
         try(PreparedStatement comando = conexao.prepareStatement(sql)){
             comando.setString(1, livro.getIsbn());
@@ -168,8 +176,8 @@ public class LivroRepositoryJdbc implements ILivroRepository {
     }
 
     private void carregarAutores(Connection conexao, Livro livro) throws SQLException{
-        String sql = "SELECT a.* FROM autor AS a"
-            + "JOIN livro_autor la ON la.autor_id = a.id" +
+        String sql = "SELECT a.* FROM autor AS a "
+            + "JOIN livro_autor la ON la.autor_id = a.id " +
             "WHERE la.livro_id = ?";
 
         try (PreparedStatement comando = conexao.prepareStatement(sql)){
@@ -190,7 +198,7 @@ public class LivroRepositoryJdbc implements ILivroRepository {
     }
 
     private void carregarExemplares(Connection conexao, Livro livro) throws SQLException {
-        String sql = "SELECT e.* FROM exemplar WHERE livro_id = ? ORDER BY codigo";
+        String sql = "SELECT e.* FROM exemplar AS e WHERE livro_id = ? ORDER BY codigo";
 
         try (PreparedStatement comando = conexao.prepareStatement(sql)){
 
