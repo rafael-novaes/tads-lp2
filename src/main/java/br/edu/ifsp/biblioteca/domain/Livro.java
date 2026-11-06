@@ -1,15 +1,43 @@
 package br.edu.ifsp.biblioteca.domain;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "livro")
 public class Livro {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true, length = 20)
     private String isbn;
+
+    @Column(nullable = false, length = 200)
     private String titulo;
+
+    @Column(name = "ano_publicacao")
     private Integer anoPublicacao;
+
+    @OneToMany(
+            mappedBy = "livro",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "livro_autor",
+            joinColumns = @JoinColumn(name = "livro_id"),
+            inverseJoinColumns = @JoinColumn(name = "autor_id")
+    )
     private List<Exemplar> listaDeExemplares;
+
+
     private List<Autor> autores;
 
     public Livro(String isbn, String titulo, Integer anoPublicacao) {

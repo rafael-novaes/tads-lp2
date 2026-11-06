@@ -3,8 +3,6 @@ package br.edu.ifsp.biblioteca.cli;
 import br.edu.ifsp.biblioteca.domain.Livro;
 import br.edu.ifsp.biblioteca.domain.Usuario;
 import br.edu.ifsp.biblioteca.exception.RegraDeNegocioException;
-import br.edu.ifsp.biblioteca.repository.LivroRepositoryEmMemoria;
-import br.edu.ifsp.biblioteca.repository.UsuarioRepositoryEmMemoria;
 import br.edu.ifsp.biblioteca.service.LivroService;
 import br.edu.ifsp.biblioteca.service.UsuarioService;
 import org.springframework.boot.CommandLineRunner;
@@ -32,7 +30,7 @@ public class CatalogoRunner implements CommandLineRunner {
         System.out.println("=== Biblioteca IFSP - v0 (tudo em memória) ===");
 
         Livro domCasmurro = new Livro(
-                "9788508145613",
+                "9788508141801",
                 "Dom Casmurro",
                 1899
         );
@@ -44,7 +42,7 @@ public class CatalogoRunner implements CommandLineRunner {
         this.livroService.adicionarExemplar(domCasmurro.getId(), "DC-002");
 
         Livro vidasSecas = new Livro(
-                "9788508145624",
+                "9788508145631",
                 "Vidas Secas",
                 1938
         );
@@ -87,7 +85,7 @@ public class CatalogoRunner implements CommandLineRunner {
 
             this.livroService.cadastrar(
                     new Livro(
-                            "9788508145613",
+                            "9788508142506",
                             "Vidas Secas",
                             1938
                     )
