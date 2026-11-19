@@ -30,7 +30,7 @@ public class CatalogoRunner implements CommandLineRunner {
         System.out.println("=== Biblioteca IFSP - v0 (tudo em memória) ===");
 
         Livro domCasmurro = new Livro(
-                "9788508141801",
+                "9788508145607",
                 "Dom Casmurro",
                 1899
         );
@@ -42,7 +42,7 @@ public class CatalogoRunner implements CommandLineRunner {
         this.livroService.adicionarExemplar(domCasmurro.getId(), "DC-002");
 
         Livro vidasSecas = new Livro(
-                "9788508145631",
+                "9788508145603",
                 "Vidas Secas",
                 1938
         );
@@ -85,7 +85,7 @@ public class CatalogoRunner implements CommandLineRunner {
 
             this.livroService.cadastrar(
                     new Livro(
-                            "9788508142506",
+                            "9788508145603",
                             "Vidas Secas",
                             1938
                     )

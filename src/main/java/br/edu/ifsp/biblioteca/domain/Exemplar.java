@@ -1,13 +1,27 @@
 package br.edu.ifsp.biblioteca.domain;
 
-import java.util.List;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "exemplar")
 public class Exemplar {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true, length = 30)
     private String codigo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
     private EStatusExemplar status;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "livro_id", nullable = false)
     private Livro livro;
+
+    protected Exemplar() {}
 
     public Exemplar(String codigo, Livro livro) {
         this.codigo = codigo;
@@ -48,24 +62,28 @@ public class Exemplar {
     }
 
     public void emprestar() {
-        if(this.status == EStatusExemplar.EMPRESTADO) {
-            throw new IllegalStateException("Exemplar " + this.codigo + "já está emprestado!!");
+
+        if (this.status == EStatusExemplar.EMPRESTADO) {
+            throw new IllegalStateException(
+                    "Exemplar " + this.codigo + " já está emprestado!!!"
+            );
         }
+
         this.status = EStatusExemplar.EMPRESTADO;
     }
 
-    public void devolver(){
+    public void devolver() {
         this.status = EStatusExemplar.DISPONIVEL;
     }
 
     public boolean estaDisponivel() {
-        return this.status ==EStatusExemplar.DISPONIVEL;
+        return this.status == EStatusExemplar.DISPONIVEL;
     }
 
     @Override
     public String toString() {
         return "Exemplar{" +
-                "codigo ='" + codigo + '\'' +
+                "codigo='" + codigo + '\'' +
                 ", status=" + status +
                 '}';
     }

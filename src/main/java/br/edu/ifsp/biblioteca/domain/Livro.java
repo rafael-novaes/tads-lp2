@@ -28,6 +28,9 @@ public class Livro {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
+    private List<Exemplar> listaDeExemplares = new ArrayList<>();
+
+    // ORM = Object Relational Mapping
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -35,10 +38,9 @@ public class Livro {
             joinColumns = @JoinColumn(name = "livro_id"),
             inverseJoinColumns = @JoinColumn(name = "autor_id")
     )
-    private List<Exemplar> listaDeExemplares;
+    private List<Autor> autores = new ArrayList<>();
 
-
-    private List<Autor> autores;
+    public Livro() {}
 
     public Livro(String isbn, String titulo, Integer anoPublicacao) {
         this.isbn = isbn;
@@ -84,10 +86,16 @@ public class Livro {
         this.listaDeExemplares.add(item);
     }
 
-    public List<Autor> getAutores() {return autores;}
-
     public void adicionarAutor(Autor autor) {
         this.autores.add(autor);
+    }
+
+    public List<Autor> getAutores() {
+        return this.autores;
+    }
+
+    public List<Exemplar> getExemplares() {
+        return this.listaDeExemplares;
     }
 
     @Override
@@ -98,10 +106,5 @@ public class Livro {
                 ", titulo='" + titulo + '\'' +
                 ", anoPublicacao=" + anoPublicacao +
                 '}';
-    }
-
-
-    public List<Exemplar> getListaDeExemplares() {
-        return listaDeExemplares;
     }
 }

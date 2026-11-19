@@ -6,13 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.LongSummaryStatistics;
 import java.util.Optional;
-
 
 /**
  *
- * JpaRepository fornece os seguintes métodos (dentre outros);
+ * JpaRepository fornece os seguintes métodos (dentre outros):
  *
  * - save, findById, findAll, count,...
  *
@@ -24,15 +22,26 @@ public interface ILivroRepository extends JpaRepository<Livro, Long> {
     boolean existsByIsbn(String isbn);
 
     /**
-     * "Containing" vira LIKE "%...%", "IgnoreCase" vira LOWER(...)
+     * "Containing" vira  LIKE "%...%", "IgnoreCase" vira LOWER(...).
      *
-     * SELECT * FROM livro WHERE titulo LIKE "%?%";
+     *  SELECT * FROM livro WHERE LOWER(titulo) LIKE "%?%";
+     *
      * @param trechoTitulo
      * @return
      */
     List<Livro> findByTituloContainingIgnoreCase(String trechoTitulo);
 
-    Page<Livro> findByTituloContainingIgnoreCase(String trechoTitulo, Pageable pagina);
+    /**
+     * Retorna a lista de livros filtrados pelo trecho do título, porém, paginado.
+     *
+     * @param trechoTitulo
+     * @param pagina
+     * @return
+     */
+    Page<Livro> findByTituloContainingIgnoreCase(
+            String trechoTitulo,
+            Pageable pagina
+    );
 
     List<Livro> buscarPorTitulo(String titulo);
 }
