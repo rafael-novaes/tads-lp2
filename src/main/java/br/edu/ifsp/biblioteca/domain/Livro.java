@@ -98,6 +98,16 @@ public class Livro {
         return this.listaDeExemplares;
     }
 
+    public long quantidadeDisponivel() {
+        long disponiveis = 0;
+        for (Exemplar e: this.getExemplares()) {
+            if (e.estaDisponivel()){
+                disponiveis++;
+            }
+        }
+        return disponiveis;
+    }
+
     @Override
     public String toString() {
         return "Livro{" +
@@ -107,4 +117,5 @@ public class Livro {
                 ", anoPublicacao=" + anoPublicacao +
                 '}';
     }
+
 }
